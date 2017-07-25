@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace CSVisualizerConsole.Classes
 {
-    class InterfaceDeclUnit : DeclUnit
+    class CSDV_VarInfo
     {
-        public InterfaceDeclUnit(Guid guid)
-            : base(guid)
-        {
-        }
+        public string Type { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
     }
 }

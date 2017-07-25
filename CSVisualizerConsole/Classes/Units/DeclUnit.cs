@@ -8,5 +8,9 @@ namespace CSVisualizerConsole.Classes
 {
     class DeclUnit : CodeUnit
     {
+        public DeclUnit(Guid guid)
+            : base(guid)
+        {
+        }
     }
 }

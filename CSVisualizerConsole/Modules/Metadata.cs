@@ -9,32 +9,65 @@ namespace CSVisualizerConsole.Modules
 {
     class Metadata
     {
-        private static Dictionary<string, object> classMap;
+        private static Dictionary<string, ClassInfo> classMap = new Dictionary<string, ClassInfo>();
 
         public static void RegisterClass(string className, ClassInfo classInfo)
         {
             classMap[className] = classInfo;
         }
 
+        public static MetadataBase FindByGuid(Guid guid)
+        {
+            foreach (var _class in classMap.Values)
+            {
+                // 해당 GUID를 갖는 클래스를 발견했을 경우
+                if (_class.Guid == guid)
+                    return _class;
+
+                foreach (var method in _class.Methods)
+                {
+                    // 해당 GUID를 갖는 메소드를 발견했을 경우
+                    if (method.Guid == guid)
+                        return method;
+                }
+
+                foreach (var field in _class.Fields)
+                {
+                    // 해당 GUID를 갖는 필드를 발견했을 경우
+                    if (field.Guid == guid)
+                        return field;
+                }
+            }
+
+            return null;
+        }
+
         public static MethodInfo[] GetMethods(string className)
         {
-            // TODO: 반환 자료형 MethodInfo 타입으로
-            throw new NotImplementedException();
+            if (!classMap.ContainsKey(className))
+                return null;
+            return classMap[className].Methods.ToArray();
         }
 
         public static MethodInfo GetMethod(string className, string methodName)
         {
-            throw new NotImplementedException();
+            if (!classMap.ContainsKey(className))
+                return null;
+            return classMap[className].Methods.Find(e => e.Name == methodName);
         }
 
         public static FieldInfo[] GetFields(string className)
         {
-            throw new NotImplementedException();
+            if (!classMap.ContainsKey(className))
+                return null;
+            return classMap[className].Fields.ToArray();
         }
 
         public static FieldInfo GetField(string className, string fieldName)
         {
-            throw new NotImplementedException();
+            if (!classMap.ContainsKey(className))
+                return null;
+            return classMap[className].Fields.Find(e => e.Name == fieldName);
         }
 
 

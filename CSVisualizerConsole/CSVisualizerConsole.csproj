@@ -141,6 +141,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\ClassInfo.cs" />
+    <Compile Include="Classes\CSDV_VarInfo.cs" />
+    <Compile Include="Classes\FieldInfo.cs" />
+    <Compile Include="Classes\MetadataBase.cs" />
+    <Compile Include="Classes\MethodInfo.cs" />
     <Compile Include="Classes\Units\AssignUnit.cs" />
     <Compile Include="Classes\Units\ClassDeclUnit.cs" />
     <Compile Include="Classes\Units\CodeUnit.cs" />
@@ -148,12 +153,13 @@
     <Compile Include="Classes\Units\FuncCallUnit.cs" />
     <Compile Include="Classes\Units\FuncCallWithReturnUnit.cs" />
     <Compile Include="Classes\Units\InterfaceDeclUnit.cs" />
+    <Compile Include="Classes\Units\MethodDeclUnit.cs" />
     <Compile Include="Classes\Units\RefAssignUnit.cs" />
     <Compile Include="Classes\Units\ValueAssignUnit.cs" />
     <Compile Include="Classes\Units\VarDeclUnit.cs" />
     <Compile Include="Modules\Classifier.cs" />
     <Compile Include="Modules\CodeUnitManager.cs" />
-    <Compile Include="Modules\CodeUnitParser.cs" />
+    <Compile Include="Modules\MetadataBuilder.cs" />
     <Compile Include="Modules\Core.cs" />
     <Compile Include="Modules\FileReader.cs" />
     <Compile Include="Modules\Metadata.cs" />

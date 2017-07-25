@@ -1,4 +1,7 @@
 using System;
+using System.IO;
+using System.Threading;
+
 
 namespace Test
 {
@@ -13,5 +16,15 @@ namespace Test
 		}
 	}
 	
+	class Book
+	{
+		private string Title;
+		
+		public void InputTitle()
+		{
+			Title = Console.ReadLine();
+		}
+	}
+
 	Person.Main(null);
 }

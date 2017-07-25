@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace CSVisualizerConsole.Classes
 {
-    class InterfaceDeclUnit : DeclUnit
+    class MetadataBase
     {
-        public InterfaceDeclUnit(Guid guid)
-            : base(guid)
-        {
-        }
+        public Guid Guid { get; protected set; }
     }
 }

@@ -10,11 +10,13 @@ namespace CSVisualizerConsole.Modules
     class Core
     {
         Classifier classifier;
+        CodeUnitManager codeUnitManager;
         string code;
 
         public Core()
         {
             classifier = new Classifier();
+            codeUnitManager = CodeUnitManager.Instance;
         }
 
         public void Start(string path)
@@ -28,21 +30,46 @@ namespace CSVisualizerConsole.Modules
             code = fileReader.Code;
 
             classifier = new Classifier();
-            var unitList = classifier.Classify(code);
+            classifier.Classify(codeUnitManager, code);
 
-            foreach (CodeUnit unit in unitList)
+            #region 테스트 용
+            Console.WriteLine("==Using List==");
+            foreach (var unit in codeUnitManager.UsingList)
             {
                 Console.WriteLine(unit);
             }
+            Console.WriteLine("====\n");
 
-            #region 테스트 용
-            Console.WriteLine("== Input Code ==");
-            Console.WriteLine(fileReader.Code);
+            Console.WriteLine("==Declare List==");
+            foreach (var unit in codeUnitManager.DeclareList)
+            {
+                Console.WriteLine(unit);
+            }
+            Console.WriteLine("====\n");
+
+            Console.WriteLine("==Assign List==");
+            foreach (var unit in codeUnitManager.AssignList)
+            {
+                Console.WriteLine(unit);
+            }
+            Console.WriteLine("====\n");
+
+            Console.WriteLine("==Call List==");
+            foreach (var unit in codeUnitManager.CallList)
+            {
+                Console.WriteLine(unit);
+            }
+            Console.WriteLine("====\n");
 
             Console.WriteLine();
-            Console.WriteLine("== Execution Result ==");
+            Console.WriteLine("==Execution Result==");
+
             ScriptEngine.Execute(fileReader.Code);
             #endregion
+
+            // Flow Management
+            // 엔트리 메소드를 찾고, 해당 엔트리 메소드를 갖는 클래스를 생성하여 실행
+            // ScriptEngine.Execute(...);
         }
     }
 }

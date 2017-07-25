@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSVisualizerConsole.Classes
+namespace CSVisualizerConsole.Classes.Units
 {
-    class ClassDeclUnit : DeclUnit
+    class MethodDeclUnit : DeclUnit
     {
         public string Name { get; set; }
 
-        public ClassDeclUnit(Guid guid)
+        public MethodDeclUnit(Guid guid)
             : base(guid)
         {
         }

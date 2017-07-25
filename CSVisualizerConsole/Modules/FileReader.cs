@@ -56,7 +56,7 @@ namespace CSVisualizerConsole.Modules
         private string RemoveNamespace(string code)
         {
             // 최상위 여는 괄호, 최하위 닫는 괄호 사이의 문자열을 구하는 패턴
-            const string nsPattern = @"namespace\s+.+\s*{(?<content>\s*(.+\n)+\s*)}";
+            // const string nsPattern = @"namespace\s+.+\s*{(?<content>\s*(.+\n)+\s*)}";
             // 여는 괄호와 닫는 괄호의 개수를 카운트하여 블록 내의 문자열을 구하는 패턴
             const string nsPattern2 = @"namespace\s+.+\s*\{(?<content>(?>\{(?<c>)|[^{}]+|\}(?<-c>))*(?(c)(?!)))\}";
 

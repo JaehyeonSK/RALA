@@ -8,5 +8,9 @@ namespace CSVisualizerConsole.Classes
 {
     class FuncCallUnit : CodeUnit
     {
+        public FuncCallUnit(Guid guid)
+            : base(guid)
+        {
+        }
     }
 }

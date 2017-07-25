@@ -8,5 +8,9 @@ namespace CSVisualizerConsole.Classes
 {
     class FuncCallWithReturnUnit : FuncCallUnit
     {
+        public FuncCallWithReturnUnit(Guid guid)
+            : base(guid)
+        {
+        }
     }
 }

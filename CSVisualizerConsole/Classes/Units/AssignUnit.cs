@@ -8,5 +8,9 @@ namespace CSVisualizerConsole.Classes
 {
     class AssignUnit : CodeUnit
     {
+        public AssignUnit(Guid guid)
+            : base(guid)
+        {
+        }
     }
 }
