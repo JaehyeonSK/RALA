@@ -4,17 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSVisualizerConsole.Classes
+namespace CSVisualizerConsole.Classes.Units
 {
-    class AssignUnit : CodeUnit
+    class VarDeclAssignUnit : VarDeclUnit
     {
-        public string LeftVar { get; private set; }
         public string RightVar { get; private set; }
 
-        public AssignUnit(Guid guid, string lval, string rval)
-            : base(guid)
+        public VarDeclAssignUnit(Guid guid, string type, string name, string rval)
+            : base(guid, type, name)
         {
-            LeftVar = lval;
             RightVar = rval;
         }
     }

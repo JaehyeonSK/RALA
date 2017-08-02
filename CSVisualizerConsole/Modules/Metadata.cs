@@ -42,6 +42,20 @@ namespace CSVisualizerConsole.Modules
             return null;
         }
 
+        public static MethodInfo GetEntryMethod()
+        {
+            MethodInfo method;
+            foreach (var classInfo in classMap.Values)
+            {
+                if ((method = classInfo.Methods.Find(e=>e.Name == "Main")) != null)
+                {
+                    return method;
+                }
+            }
+
+            throw new Exception("there is no entry method(Main) !!");
+        }
+
         public static MethodInfo[] GetMethods(string className)
         {
             if (!classMap.ContainsKey(className))

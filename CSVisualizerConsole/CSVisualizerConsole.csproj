@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\ClassInfo.cs" />
+    <Compile Include="Modules\Context.cs" />
     <Compile Include="Classes\CSDV_VarInfo.cs" />
     <Compile Include="Classes\FieldInfo.cs" />
     <Compile Include="Classes\MetadataBase.cs" />
@@ -156,9 +157,11 @@
     <Compile Include="Classes\Units\MethodDeclUnit.cs" />
     <Compile Include="Classes\Units\RefAssignUnit.cs" />
     <Compile Include="Classes\Units\ValueAssignUnit.cs" />
+    <Compile Include="Classes\Units\VarDeclAssignUnit.cs" />
     <Compile Include="Classes\Units\VarDeclUnit.cs" />
     <Compile Include="Modules\Classifier.cs" />
     <Compile Include="Modules\CodeUnitManager.cs" />
+    <Compile Include="Modules\MemoryManager.cs" />
     <Compile Include="Modules\MetadataBuilder.cs" />
     <Compile Include="Modules\Core.cs" />
     <Compile Include="Modules\FileReader.cs" />

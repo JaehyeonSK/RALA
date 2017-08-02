@@ -8,8 +8,8 @@ namespace CSVisualizerConsole.Classes
 {
     class RefAssignUnit : AssignUnit
     {
-        public RefAssignUnit(Guid guid)
-            : base(guid)
+        public RefAssignUnit(Guid guid, string lval, string rval)
+            : base(guid, lval, rval)
         {
         }
     }

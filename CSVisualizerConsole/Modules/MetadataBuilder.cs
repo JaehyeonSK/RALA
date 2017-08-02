@@ -24,7 +24,8 @@ namespace CSVisualizerConsole.Modules
             // name:        메소드이름
             // params:      메소드 파라미터 (타입 이름, ...)
             // content:     메소드 내용
-            string methodPattern = @"(?<modifier>private|public|protected)\s+(?<return>\w+)\s+(?<name>[a-zA-Z_][a-zA-Z0-9_]*)\((?<params>.*)\)\s*{(?<content>(?>\{(?<c>)|[^{}]+|\}(?<-c>))*(?(c)(?!)))\}";
+            //string methodPattern = @"(?<modifier>private|public|protected)\s+(?<return>\w+)\s+(?<name>[a-zA-Z_][a-zA-Z0-9_]*)\((?<params>.*)\)\s*{(?<content>(?>\{(?<c>)|[^{}]+|\}(?<-c>))*(?(c)(?!)))\}";
+            string methodPattern = @"(?<modifier>private|public|protected)(\s(?<static>static))*\s+(?<return>\w+)\s+(?<name>[a-zA-Z_][a-zA-Z0-9_]*)\((?<params>.*)\)\s*{(?<content>(?>\{(?<c>)|[^{}]+|\}(?<-c>))*(?(c)(?!)))\}";
             Regex regex = new Regex(methodPattern);
 
             ClassInfo newClass = new ClassInfo(guid, name, ClassInfo.AccessModifier.Public);
@@ -36,6 +37,7 @@ namespace CSVisualizerConsole.Modules
                 string modifier = match.Groups["modifier"].Value;
                 string returnType = match.Groups["return"].Value;
                 string methodName = match.Groups["name"].Value;
+                bool isStatic = string.IsNullOrWhiteSpace(match.Groups["static"].Value) ? false : true;
                 string param = match.Groups["params"].Value;
                 string methodBody = match.Groups["content"].Value;
 
@@ -76,19 +78,24 @@ namespace CSVisualizerConsole.Modules
                 // 클래스 메타데이터의 메소드 목록에 추가
                 MethodInfo method = new MethodInfo(
                     guid: methodGuid,
+                    className: name,
                     name: methodName,
+                    returnType: returnType,
                     paramInfo: paramList.ToArray(),
-                    isStatic: false,
+                    isStatic: isStatic,
                     modifier: mod
                     );
                 newClass.Methods.Add(method);
 
                 // 메소드 선언 유닛 생성 및 추가
+                var methodCodeUnitList = Classifier.Instance.ProcessMethodBody(methodBody);
                 MethodDeclUnit methodUnit = new MethodDeclUnit(methodGuid)
                 {
                     Name = methodName,
-                    Content = methodBody
+                    Content = methodBody,
+                    CodeUnitList = methodCodeUnitList
                 };
+
                 CodeUnitManager.Instance.DeclareList.Add(methodUnit);
             }
 

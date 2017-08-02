@@ -9,10 +9,12 @@ namespace CSVisualizerConsole.Classes.Units
     class MethodDeclUnit : DeclUnit
     {
         public string Name { get; set; }
+        public List<CodeUnit> CodeUnitList { get; set; }
 
         public MethodDeclUnit(Guid guid)
             : base(guid)
         {
+
         }
 
         public override string ToString()

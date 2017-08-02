@@ -15,8 +15,21 @@ namespace CSVisualizerConsole.Modules
             "using", "class", "interface",
             "byte", "sbyte", "char", "short", "ushort", "int", "uint", "long", "ulong", "float", "double", "decimal"
         };
-        private int curPos = 0;
-        private int endPos = -1;
+
+        private static Classifier instance;
+        public static Classifier Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new Classifier();
+                return instance;
+            }
+        }
+
+        private Classifier()
+        {
+        }
 
         private CodeUnit ProcessInterface(string code)
         {
@@ -57,7 +70,7 @@ namespace CSVisualizerConsole.Modules
             const string classPattern = @"class\s+(?<name>.+)\s*\{(?<content>(?>\{(?<c>)|[^{}]+|\}(?<-c>))*(?(c)(?!)))\}";
             Regex regex = new Regex(classPattern);
             var matches = regex.Matches(code);
-            
+
             // 모든 클래스 블록에 대한 처리
             foreach (Match match in matches)
             {
@@ -69,7 +82,7 @@ namespace CSVisualizerConsole.Modules
                 ClassDeclUnit classUnit = new ClassDeclUnit(newGuid)
                 {
                     Name = className,
-                    Content = content
+                    Content = match.Value
                 };
                 manager.DeclareList.Add(classUnit);
 
@@ -83,11 +96,78 @@ namespace CSVisualizerConsole.Modules
             return code;
         }
 
+        private CodeUnit SelectType(string codeUnit)
+        {
+            // type: 변수 타입(null이 아니면 선언문)
+            // lval: 좌항
+            // rval: 우항
+            string assignPattern = @"(?<type>[a-zA-Z0-9]+)?\s+(?<lval>[a-zA-Z0-9_]+)\s*=\s*(?<rval>.+)";
+
+            Regex assignRegex = new Regex(assignPattern);
+            var match = assignRegex.Match(codeUnit);
+            // 할당에 해당할 경우
+            if (match != null)
+            {
+                var type = match.Groups["type"].Value;
+                var lval = match.Groups["lval"].Value;
+                var rval = match.Groups["rval"].Value;
+
+                if (string.IsNullOrWhiteSpace(type))
+                    // 단순 할당문
+                    return new AssignUnit(Guid.NewGuid(), lval, rval) { Content = match.Value };
+                else
+                    // 선언 및 초기화문
+                    return new VarDeclAssignUnit(Guid.NewGuid(), type, lval, rval) { Content = match.Value };
+            }
+
+            // type: 변수 선언 타입
+            // name: 변수 이름
+            string varDeclPattern = @"(?<type>[a-zA-Z0-9]+)\s+(?<name>[a-zA-Z0-9_]+)\s*;";
+
+            Regex varDeclRegex = new Regex(varDeclPattern);
+            match = varDeclRegex.Match(codeUnit);
+            // 단순 선언에 해당할 경우
+            if (match != null)
+            {
+                var type = match.Groups["type"].Value;
+                var name = match.Groups["name"].Value;
+
+                return new VarDeclUnit(Guid.NewGuid(), type, name) { Content = match.Value };
+            }
+
+            string funcCallPattern = @"()";
+
+            return new CodeUnit(Guid.Empty);
+        }
+
+        /// <summary>
+        /// Method Body 내 코드 유닛들을 리스트화 시켜서 반환한다.
+        /// </summary>
+        /// <param name="methodBodyContent"></param>
+        /// <returns></returns>
+        public List<CodeUnit> ProcessMethodBody(string methodBodyContent)
+        {
+            string codeUnitPattern = @"\s*(?<code_unit>.+)\s*;";
+            Regex regex = new Regex(codeUnitPattern);
+            var matches = regex.Matches(methodBodyContent);
+
+            List<CodeUnit> codeUnitList = new List<CodeUnit>();
+
+            // 메소드의 내용을 코드유닛들로 분리하고 분류하여 리스트에 추가
+            foreach (Match match in matches)
+            {
+                var line = match.Groups["code_unit"].Value;
+                CodeUnit unit = SelectType(line);
+                codeUnitList.Add(unit);
+            }
+
+            return codeUnitList;
+        }
+
         public void Classify(CodeUnitManager manager, string code)
         {
             code = ProcessUsingStatements(manager, code);
             code = ProcessClassDeclarations(manager, code);
-
         }
     }
 }

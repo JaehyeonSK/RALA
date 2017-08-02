@@ -5,7 +5,18 @@ using System.Threading;
 
 namespace Test
 {
-	class Person 
+	public class Book
+	{
+		private string Title;
+		
+		public void InputTitle()
+		{
+			Title = Console.ReadLine();
+			Console.WriteLine(Title);
+		}
+	}
+
+	public class Person 
 	{
 		public static void Main(string[] args)
 		{
@@ -13,18 +24,10 @@ namespace Test
 			int b = 5;
 			int c = a + b;
 			Console.WriteLine($"{a} + {b} = {c}");
+			Book book = new Book();
+			book.InputTitle();
 		}
 	}
 	
-	class Book
-	{
-		private string Title;
-		
-		public void InputTitle()
-		{
-			Title = Console.ReadLine();
-		}
-	}
-
-	Person.Main(null);
+	
 }

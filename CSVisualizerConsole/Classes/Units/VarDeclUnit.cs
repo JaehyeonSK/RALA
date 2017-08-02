@@ -8,9 +8,14 @@ namespace CSVisualizerConsole.Classes.Units
 {
     class VarDeclUnit : DeclUnit
     {
-        public VarDeclUnit(Guid guid)
+        public string Type { get; private set; }
+        public string Name { get; private set; }
+        
+        public VarDeclUnit(Guid guid, string type, string name)
             : base(guid)
         {
+            Type = type;
+            Name = name;
         }
     }
 }

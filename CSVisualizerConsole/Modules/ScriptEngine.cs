@@ -6,6 +6,7 @@ namespace CSVisualizerConsole
     public class ScriptEngine
     {
         private static ScriptState<object> state = null;
+
         public static object Execute(string code)
         {
             state = state == null ? CSharpScript.RunAsync(code).Result : state.ContinueWithAsync(code).Result;
