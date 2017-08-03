@@ -17,5 +17,11 @@ namespace CSVisualizerConsole.Classes
             ClassName = className;
             MethodName = methodName;
         }
+
+        public override string ToString()
+        {
+            Console.Write($"{ClassName}.{MethodName}");
+            return base.ToString();
+        }
     }
 }

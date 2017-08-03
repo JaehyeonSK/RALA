@@ -101,12 +101,13 @@ namespace CSVisualizerConsole.Modules
             // type: 변수 타입(null이 아니면 선언문)
             // lval: 좌항
             // rval: 우항
-            string assignPattern = @"(?<type>[a-zA-Z0-9]+)?\s+(?<lval>[a-zA-Z0-9_]+)\s*=\s*(?<rval>.+)";
+            //string assignPattern = @"(?<type>[a-zA-Z0-9]+)?\s+(?<lval>[a-zA-Z0-9_]+)\s*=\s*(?<rval>.+)";
+            string assignPattern = @"((?<type>[a-zA-Z0-9]+)\s+)?(?<lval>[a-zA-Z0-9_]+)\s*=\s*(?<rval>.+);";
 
             Regex assignRegex = new Regex(assignPattern);
             var match = assignRegex.Match(codeUnit);
             // 할당에 해당할 경우
-            if (match != null)
+            if (match.Length > 0)
             {
                 var type = match.Groups["type"].Value;
                 var lval = match.Groups["lval"].Value;
@@ -122,12 +123,12 @@ namespace CSVisualizerConsole.Modules
 
             // type: 변수 선언 타입
             // name: 변수 이름
-            string varDeclPattern = @"(?<type>[a-zA-Z0-9]+)\s+(?<name>[a-zA-Z0-9_]+)\s*;";
+            string varDeclPattern = @"(?<type>[a-zA-Z0-9]+)\s+(?<name>[a-zA-Z0-9_]+);";
 
             Regex varDeclRegex = new Regex(varDeclPattern);
             match = varDeclRegex.Match(codeUnit);
             // 단순 선언에 해당할 경우
-            if (match != null)
+            if (match.Length > 0)
             {
                 var type = match.Groups["type"].Value;
                 var name = match.Groups["name"].Value;
@@ -135,7 +136,20 @@ namespace CSVisualizerConsole.Modules
                 return new VarDeclUnit(Guid.NewGuid(), type, name) { Content = match.Value };
             }
 
-            string funcCallPattern = @"()";
+            //string funcCallPattern = @"(?<classname>([a-zA-Z_][a-zA-Z0-9_]+\.){0,})(?<name>[a-zA-Z_][a-zA-Z0-9_]*)\((\s*\w+\s*,?){0,}\)";
+            string funcCallPattern = @"(?<classname>([a-zA-Z_][a-zA-Z0-9_]+\.){0,})(?<name>[a-zA-Z_][a-zA-Z0-9_]*)\((\s*.+\s*,?){0,}\);";
+
+            Regex funcCallRegex = new Regex(funcCallPattern);
+            match = funcCallRegex.Match(codeUnit);
+
+            if (match.Length > 0)
+            {
+                var className = match.Groups["classname"].Value;
+                className = className.Substring(0, className.Length - 1);
+                var methodName = match.Groups["name"].Value;
+
+                return new FuncCallUnit(Guid.NewGuid(), className, methodName) { Content = match.Value };
+            }
 
             return new CodeUnit(Guid.Empty);
         }
@@ -156,7 +170,7 @@ namespace CSVisualizerConsole.Modules
             // 메소드의 내용을 코드유닛들로 분리하고 분류하여 리스트에 추가
             foreach (Match match in matches)
             {
-                var line = match.Groups["code_unit"].Value;
+                var line = match.Groups["code_unit"].Value + ";";
                 CodeUnit unit = SelectType(line);
                 codeUnitList.Add(unit);
             }

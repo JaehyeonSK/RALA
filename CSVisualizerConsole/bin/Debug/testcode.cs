@@ -9,14 +9,13 @@ namespace Test
 	{
 		private string Title;
 		
-		public void InputTitle()
-		{
-			Title = Console.ReadLine();
-			Console.WriteLine(Title);
+		public void InputTitle(string title)
+		{	
+			Title = title;
 		}
 	}
 
-	public class Person 
+	public class Program
 	{
 		public static void Main(string[] args)
 		{
@@ -25,7 +24,7 @@ namespace Test
 			int c = a + b;
 			Console.WriteLine($"{a} + {b} = {c}");
 			Book book = new Book();
-			book.InputTitle();
+			book.InputTitle("Hello");
 		}
 	}
 	

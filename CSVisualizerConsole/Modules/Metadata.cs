@@ -16,6 +16,26 @@ namespace CSVisualizerConsole.Modules
             classMap[className] = classInfo;
         }
 
+        public static Guid GetClassGuid(string className)
+        {
+            if (!classMap.ContainsKey(className))
+                return Guid.Empty;
+            
+            return classMap[className].Guid;
+        }
+
+        public static Guid GetMethodGuid(string className, string methodName)
+        {
+            if (!classMap.ContainsKey(className))
+                return Guid.Empty;
+
+            var methodInfo = classMap[className].Methods.Find(m => m.Name == methodName);
+            if (methodInfo == null)
+                return Guid.Empty;
+
+            return methodInfo.Guid;
+        }
+
         public static MetadataBase FindByGuid(Guid guid)
         {
             foreach (var _class in classMap.Values)
