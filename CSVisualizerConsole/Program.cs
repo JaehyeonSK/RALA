@@ -9,12 +9,12 @@ namespace CSVisualizerConsole
 {
     class Program
     {
-        static string FILE = "testcode.cs";
+        static string[] files = { "testcode.cs", "linkedlist.cs" };
 
         static void Main(string[] args)
         {
             Core core = new Core();
-            core.Start(FILE);
+            core.Start(files[1]);
         }
     }
 }

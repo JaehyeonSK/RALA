@@ -16,6 +16,14 @@ namespace CSVisualizerConsole.Modules
             classMap[className] = classInfo;
         }
 
+        public static ClassInfo GetClassInfo(string className)
+        {
+            if (!classMap.ContainsKey(className))
+                return null;
+
+            return classMap[className];
+        }
+
         public static Guid GetClassGuid(string className)
         {
             if (!classMap.ContainsKey(className))

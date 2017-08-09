@@ -11,10 +11,21 @@ namespace CSVisualizerConsole.Modules
 {
     class MetadataBuilder
     {
-        private static FieldInfo BuildFieldInfo(ClassInfo classInfo, string code)
+        private static void BuildFieldInfos(ClassInfo classInfo, string code)
         {
-            //TODO: 구현 필요
-            throw new NotImplementedException();
+            string fieldPattern = @"\s*((?<modifier>private|public|protected)\s+)?(?<type>\w+)\s+(?<name>\w+);";
+            Regex regex = new Regex(fieldPattern);
+
+            var matches = regex.Matches(code);
+            foreach (Match match in matches)
+            {
+                string type = match.Groups["type"].Value;
+                string mod = match.Groups["modifier"].Value;
+                string name = match.Groups["name"].Value;
+                FieldInfo fInfo = new FieldInfo(Guid.NewGuid(), type, name, false);
+
+                classInfo.Fields.Add(fInfo);
+            }
         }
 
         public static ClassInfo BuildClassInfo(Guid guid, string name, string content)
@@ -63,10 +74,15 @@ namespace CSVisualizerConsole.Modules
                     foreach (string p in ps)
                     {
                         string[] tn = p.Split(' ');
+                        var _type = tn[0].Trim();
+                        var _name = tn[1].Trim();
+
                         paramList.Add(new CSDV_VarInfo()
                         {
-                            Type = tn[0].Trim(),
-                            Name = tn[1].Trim()
+                            Type = _type,
+                            Name = _name,
+                            VarType = Classifier.Instance.IsVarType(_type) ? 
+                            CSDV_VarInfo.CSDV_Type.VAR_TYPE : CSDV_VarInfo.CSDV_Type.REF_TYPE
                         });
                     }
                 }
@@ -98,6 +114,8 @@ namespace CSVisualizerConsole.Modules
 
                 CodeUnitManager.Instance.DeclareList.Add(methodUnit);
             }
+
+            BuildFieldInfos(newClass, content);
 
             return newClass;
         }

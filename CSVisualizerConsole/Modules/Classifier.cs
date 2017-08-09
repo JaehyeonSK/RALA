@@ -102,7 +102,7 @@ namespace CSVisualizerConsole.Modules
             // lval: 좌항
             // rval: 우항
             //string assignPattern = @"(?<type>[a-zA-Z0-9]+)?\s+(?<lval>[a-zA-Z0-9_]+)\s*=\s*(?<rval>.+)";
-            string assignPattern = @"((?<type>[a-zA-Z0-9]+)\s+)?(?<lval>[a-zA-Z0-9_]+)\s*=\s*(?<rval>.+);";
+            string assignPattern = @"((?<type>[a-zA-Z0-9]+)\s+)?(?<lval>[.a-zA-Z0-9_]+)\s*=\s*(?<rval>.+);";
 
             Regex assignRegex = new Regex(assignPattern);
             var match = assignRegex.Match(codeUnit);
@@ -137,7 +137,7 @@ namespace CSVisualizerConsole.Modules
             }
 
             //string funcCallPattern = @"(?<classname>([a-zA-Z_][a-zA-Z0-9_]+\.){0,})(?<name>[a-zA-Z_][a-zA-Z0-9_]*)\((\s*\w+\s*,?){0,}\)";
-            string funcCallPattern = @"(?<classname>([a-zA-Z_][a-zA-Z0-9_]+\.){0,})(?<name>[a-zA-Z_][a-zA-Z0-9_]*)\((\s*.+\s*,?){0,}\);";
+            string funcCallPattern = @"(?<classname>([a-zA-Z_][a-zA-Z0-9_]+\.){0,})(?<name>[a-zA-Z_][a-zA-Z0-9_]*)\((?<params>\s*.+\s*,?){0,}\);";
 
             Regex funcCallRegex = new Regex(funcCallPattern);
             match = funcCallRegex.Match(codeUnit);
@@ -147,11 +147,52 @@ namespace CSVisualizerConsole.Modules
                 var className = match.Groups["classname"].Value;
                 className = className.Substring(0, className.Length - 1);
                 var methodName = match.Groups["name"].Value;
+                var parameters = match.Groups["params"].Value;
+                var paramList = parameters.Replace(" ", "").Split(',').ToList();
 
-                return new FuncCallUnit(Guid.NewGuid(), className, methodName) { Content = match.Value };
+                FuncCallUnit funcCallUnit = new FuncCallUnit(Guid.NewGuid(), className, methodName)
+                {
+                    Content = match.Value,
+                };
+
+                var m = Metadata.GetMethod(className, methodName);
+                if (m != null)
+                {
+                    var ps = m.Parameters;
+                    for (int i = 0; i < Math.Min(paramList.Count, ps.Length); i++)
+                    {
+                        ps[i].Value = paramList[i];
+                    }
+                    funcCallUnit.ParamList.AddRange(ps);
+                }
+
+                return funcCallUnit;
             }
 
             return new CodeUnit(Guid.Empty);
+        }
+
+        public string[] GetParameterValues(FuncCallUnit funcCallUnit)
+        {
+            string paramValuesPattern = @"\((?<params>.+)\)";
+            var callStatement = funcCallUnit.Content;
+
+            Regex regex = new Regex(paramValuesPattern);
+            Match match = regex.Match(callStatement);
+
+            string[] param = null;
+            if (match.Success)
+            {
+                string matchedString = match.Groups["params"]?.Value;
+                if (!string.IsNullOrEmpty(matchedString))
+                {
+                    param = matchedString.Split(',');
+                    for (int i = 0; i < param.Length; i++)
+                        param[i] = param[i].Trim();
+                }
+            }
+
+            return param;
         }
 
         /// <summary>
@@ -178,10 +219,59 @@ namespace CSVisualizerConsole.Modules
             return codeUnitList;
         }
 
+        public RefValueKind RefAssignType(string refAssignStatement, out string type)
+        {
+            Regex regex = new Regex(@"(?<hasNew>new\s)?\s*(?<refVal>[\w]+)(\s*\((?<params>.*)\))?");
+            var match = regex.Match(refAssignStatement);
+
+            type = null;
+
+            if (!match.Success)
+            {
+                return RefValueKind.Other;
+            }
+
+            if (match.Groups["hasNew"].Value != null)
+            {
+                type = match.Groups["refVal"].Value;
+                return RefValueKind.NewObject;
+            }
+
+            return RefValueKind.Reference;
+        }
+
+        public bool IsVarType(string type)
+        {
+            string[] vartypes = {
+                    "byte","sbyte","short","ushort","int","uint","long","ulong",
+                    "float", "double", "decimal"
+                    };
+            return vartypes.Contains(type);
+        }
+
+        public bool IsLiteral(string val)
+        {
+            string literalPattern = @"\s*((?<float>\d+\.\d+)|(?<integer>\d+)|(?<string>"".+"")|(?<null>null))\s*";
+            Regex regex = new Regex(literalPattern);
+            Match match = regex.Match(val);
+
+            if (match.Success)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public void Classify(CodeUnitManager manager, string code)
         {
             code = ProcessUsingStatements(manager, code);
             code = ProcessClassDeclarations(manager, code);
+        }
+
+        public enum RefValueKind
+        {
+            NewObject, Reference, Other
         }
     }
 }

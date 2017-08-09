@@ -8,6 +8,7 @@ namespace Test
 	public class Book
 	{
 		private string Title;
+        public int a;
 		
 		public void InputTitle(string title)
 		{	
@@ -21,7 +22,10 @@ namespace Test
 		{
 			int a = 3;
 			int b = 5;
-			int c = a + b;
+			int c;
+            			int d;
+			c = a;
+			d = 3;
 			Console.WriteLine($"{a} + {b} = {c}");
 			Book book = new Book();
 			book.InputTitle("Hello");

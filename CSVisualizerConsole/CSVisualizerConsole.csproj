@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\ClassInfo.cs" />
+    <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Modules\Context.cs" />
     <Compile Include="Classes\CSDV_VarInfo.cs" />
     <Compile Include="Classes\FieldInfo.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Classes\Units\VarDeclUnit.cs" />
     <Compile Include="Modules\Classifier.cs" />
     <Compile Include="Modules\CodeUnitManager.cs" />
+    <Compile Include="Modules\GuiHandler.cs" />
     <Compile Include="Modules\MemoryManager.cs" />
     <Compile Include="Modules\MetadataBuilder.cs" />
     <Compile Include="Modules\Core.cs" />
