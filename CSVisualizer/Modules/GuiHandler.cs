@@ -3,6 +3,8 @@ using CSVisualizer.Controls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -107,15 +109,6 @@ namespace CSVisualizer.Modules
                 // 변수 영역 컨트롤에 변수의 값 혹은 참조하는 객체 guid 부착
                 varArea.Tag = varInfo.Value;
 
-                // 사이즈 체인지 리스너 부착
-                varArea.SizeChanged += (e, v) =>
-                {
-                    window.Dispatcher.Invoke(() => 
-                    {
-                        UpdatePositionMemory(targetFrame);
-                    });
-                };
-
                 window.rootCanvas.Children.Add(varArea);
 
                 // 다음에 생성될 컨트롤 위치 저장
@@ -144,15 +137,6 @@ namespace CSVisualizer.Modules
 
                 // 변수 영역 컨트롤에 객체 guid 부착
                 varArea.Tag = objGuid;
-
-                // 사이즈 체인지 리스너 부착
-                varArea.SizeChanged += (e, v) =>
-                {
-                    window.Dispatcher.Invoke(() =>
-                    {
-                        UpdatePositionMemory(targetFrame);
-                    });
-                };
 
                 window.rootCanvas.Children.Add(varArea);
 
@@ -183,6 +167,7 @@ namespace CSVisualizer.Modules
                         && ((Guid)varArea.Tag) == varGuid)
                     {
                         varArea.SetContents(varGuid, MemoryManager.Instance.GetObject(varGuid));
+                        UpdatePositionMemory(heapFrame);
                         return;
                     }
                 }
@@ -192,10 +177,11 @@ namespace CSVisualizer.Modules
                     if (varArea.Name == varInfo.Name)
                     {
                         varArea.SetContents(
-                            varInfo.Name, 
-                            varInfo.Type, 
+                            varInfo.Name,
+                            varInfo.Type,
                             varInfo.Value.GetType() == typeof(Guid) ?
                             ((Guid)varInfo.Value).Shorten() : (string)varInfo.Value);
+                        UpdatePositionMemory(frameDict[Context.CurrentMethodContext]);
                         return;
                     }
                 }
@@ -209,6 +195,7 @@ namespace CSVisualizer.Modules
                             varInfo.Type,
                             varInfo.Value.GetType() == typeof(Guid) ?
                             ((Guid)varInfo.Value).Shorten() : (string)varInfo.Value);
+                        UpdatePositionMemory(frameDict[Context.CurrentObjectContext]);
                         return;
                     }
                 }
@@ -240,7 +227,8 @@ namespace CSVisualizer.Modules
 
         private void UpdatePositionMemory(MemoryFrame targetFrame)
         {
-            var targetList = varsInMemory[targetFrame];
+            List<VarArea> targetList = null;
+            targetList = varsInMemory[targetFrame];
 
             // X 위치를 기준으로 오름차순 정렬
             targetList.Sort((v1, v2) =>
@@ -248,7 +236,6 @@ namespace CSVisualizer.Modules
                 if (Canvas.GetLeft(v1) >= Canvas.GetLeft(v2)) return 1;
                 else return -1;
             });
-
 
             // X 위치를 다시 잡음
             for (int i = 1; i < targetList.Count; i++)

@@ -1,7 +1,9 @@
 ﻿using CSVisualizer.Classes;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Windows;
 
 namespace CSVisualizer.Modules
 {
@@ -9,8 +11,8 @@ namespace CSVisualizer.Modules
     {
         public enum MemoryType { Stack, Heap }
         
-        private static List<Guid> methodContextList = new List<Guid>();
-        private static List<Guid> objectContextList = new List<Guid>();
+        private static List<Guid> methodContextList = null;
+        private static List<Guid> objectContextList = null;
 
         public static Guid CurrentObjectContext
         {
@@ -26,6 +28,12 @@ namespace CSVisualizer.Modules
             {
                 return methodContextList.Last();
             }
+        }
+
+        public static void Init()
+        {
+            methodContextList = new List<Guid>();
+            objectContextList = new List<Guid>();
         }
 
         public static void CreateNewScope(bool isStatic, Guid objectGuid, Guid methodGuid, List<CSDV_VarInfo> args)
@@ -49,6 +57,10 @@ namespace CSVisualizer.Modules
                 methodContextList.Push(methodGuid);
             }
 
+            //MessageBox.Show("Create Stack > " + methodContextList.Last().Shorten());
+            //var temp = new StreamWriter(new FileStream("temp.txt", FileMode.Append));
+            //temp.WriteLine("Create Stack > " + methodContextList.Last().Shorten());
+            //temp.Close();
             MemoryManager.Instance.CreateStack(methodGuid);
             if (args != null)
             {
@@ -61,6 +73,10 @@ namespace CSVisualizer.Modules
 
         public static void DestoryCurrentScope()
         {
+            //var temp = new StreamWriter(new FileStream("temp.txt", FileMode.Append));
+            //temp.WriteLine("Destroy Stack > " + methodContextList.Last().Shorten());
+            //temp.Close();
+            //MessageBox.Show("Destroy Stack > " + methodContextList.Last().Shorten());
             MemoryManager.Instance.DestoryStack(methodContextList.Last());
             // 가장 뒤 요소들 제거
             objectContextList.RemoveAt(objectContextList.Count - 1);

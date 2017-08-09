@@ -46,11 +46,6 @@ namespace CSVisualizer.Controls
 
             this.Width = s.Width + canv.Margin.Left * 2;
             this.Height = s.Height + canv.Margin.Top * 2;
-            //rect.Width = s.Width;
-            //rect.Height = s.Height;
-
-            //this.Width = rect.Width;
-            //this.Height = rect.Height;
         }
 
         public void SetContents(Guid objGuid, List<CSDV_VarInfo> fields)

@@ -318,7 +318,7 @@ namespace CSVisualizerConsole.Modules
             }
 
             // 함수 종료에 따른 컨텍스트 삭제
-            Context.DestoryCurrentScope();
+            Context.DestroyCurrentScope();
         }
 
         private void Analyze(FuncCallUnit callUnit)

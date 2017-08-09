@@ -49,6 +49,7 @@ namespace CSVisualizerConsole.Modules
                 methodContextList.Push(methodGuid);
             }
 
+            
             MemoryManager.Instance.CreateStack(methodGuid);
             if (args != null)
             {
@@ -59,9 +60,9 @@ namespace CSVisualizerConsole.Modules
             }
         }
 
-        public static void DestoryCurrentScope()
+        public static void DestroyCurrentScope()
         {
-            MemoryManager.Instance.DestoryStack(methodContextList.Last());
+            MemoryManager.Instance.DestroyStack(methodContextList.Last());
             // 가장 뒤 요소들 제거
             objectContextList.RemoveAt(objectContextList.Count - 1);
             methodContextList.RemoveAt(methodContextList.Count - 1);

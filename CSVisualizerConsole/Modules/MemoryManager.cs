@@ -40,7 +40,7 @@ namespace CSVisualizerConsole.Modules
             StackMemory.Add(guid, new Dictionary<Guid, CSDV_VarInfo>());
         }
 
-        public void DestoryStack(Guid guid)
+        public void DestroyStack(Guid guid)
         {
             StackMemory.Remove(guid);
         }

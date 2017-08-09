@@ -38,11 +38,19 @@ namespace CSVisualizer.Modules
         string code;
         int interval;
 
-        private ManualResetEvent _stop = new ManualResetEvent(false);
 
+        private ManualResetEvent _stop;
+        private ManualResetEvent _step;
+
+        public bool ManualMode { get; set; } = false;
         public bool ActualExecution { get; set; } = false;
 
+        #region EventHandlers
         public event Action Terminated;
+        public event Action StepEnabled;
+        public event Action StepDisabled;
+        public event Action<string> CodeUnitSent;
+        #endregion
 
         public Core() 
             : this(0)
@@ -53,11 +61,15 @@ namespace CSVisualizer.Modules
         {
             this.interval = interval;
 
+            _stop = new ManualResetEvent(false);
+            _step = new ManualResetEvent(false);
+
             classifier = Classifier.Instance;
             codeUnitManager = CodeUnitManager.Instance;
             memoryManager = MemoryManager.Instance;
             guiHandler = GuiHandler.Instance;
 
+            Context.Init();
             codeUnitManager.Init();
             memoryManager.Init();
             Metadata.Clear();
@@ -67,6 +79,11 @@ namespace CSVisualizer.Modules
         {
             // 종료 요청
             _stop.Set();
+        }
+
+        public void Step()
+        {
+            _step.Set();
         }
 
         public void Start(string path)
@@ -214,12 +231,24 @@ namespace CSVisualizer.Modules
                 // Interval만큼 대기
                 Thread.Sleep(interval);
 
-                if(_stop.WaitOne(1))
-                {
+                if (_stop.WaitOne(1))
                     return;
-                }
 
                 CodeUnit codeUnit = execList.Pop();
+
+                if (ManualMode)
+                {
+                    StepEnabled?.Invoke();
+                    // Auto Step이 아닐 경우
+                    while (!_step.WaitOne(1))
+                    {
+                        if (_stop.WaitOne(1))
+                            _step.Set();
+                    }
+                    _step.Reset();
+                    StepDisabled?.Invoke();
+                }
+                CodeUnitSent?.Invoke(codeUnit.Content);
 
                 guiHandler.WriteLog("[E]" + codeUnit.Content);
 

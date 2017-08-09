@@ -4,96 +4,116 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CSVisualizer"
-        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d" 
-        Title="MainWindow" Height="700" Width="1000" ResizeMode="CanMinimize">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+        Title="Run And Learn Algorithm" Height="700" Width="1333" ResizeMode="CanMinimize">
+    <Grid Name="rootGrid">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        
-        <ScrollViewer Name="scrollViewer" Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <Canvas Name="rootCanvas">
+        <Grid Grid.Column="0">
+            <Canvas Name="codeArea" Margin="10">
+                
             </Canvas>
-        </ScrollViewer>
+        </Grid>
 
-        <Border Grid.Row="0" Grid.Column="2" BorderThickness="1 0 0 1" BorderBrush="Black">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <TextBlock Margin="5">[Log]</TextBlock>
-                <TextBox Name="textLog" Grid.Row="1" VerticalAlignment="Stretch" AcceptsReturn="True" IsReadOnly="True" Margin="10"></TextBox>
-            </Grid>
-        </Border>
+        <Grid Grid.Column="1" Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <materialDesign:Card Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
+                <ScrollViewer Name="scrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <Canvas Name="rootCanvas">
+                    </Canvas>
+                </ScrollViewer>
+            </materialDesign:Card>
 
-        <Border Grid.Row="1" Grid.Column="2" BorderThickness="1 0 0 1" BorderBrush="Black">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Margin="5">[Code]</TextBlock>
-                <TextBlock Name="tbCodeName" Grid.Column="1" Margin="5" />
-                <Button Name="btnLoad" Grid.Column="2" Click="btnLoadClick" Margin="5" >...</Button>
-                <TextBox Name="textCode" Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Stretch" AcceptsReturn="True" IsReadOnly="True" Margin="10"></TextBox>
-            </Grid>
-        </Border>
-
-        <Border Grid.Row="2" Grid.Column="2" BorderThickness="1 0 0 0" BorderBrush="Black">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Margin="5">[Control Panel]</TextBlock>
-                <Grid Grid.Row="1" Grid.ColumnSpan="3">
+            <materialDesign:Card Grid.Row="0" Grid.Column="2" BorderThickness="1 0 0 1" VerticalAlignment="Stretch" Margin="5" BorderBrush="Black">
+                <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
                         <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Margin="5">[Log]</TextBlock>
+                    <TextBox Name="textLog" Grid.Row="1" VerticalAlignment="Stretch" Focusable="False" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Margin="10"></TextBox>
+                </Grid>
+            </materialDesign:Card>
+
+            <materialDesign:Card Grid.Row="1" Grid.Column="2" BorderThickness="1 0 0 1" VerticalAlignment="Stretch" Margin="5" BorderBrush="Black">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-
-                    <TextBlock Text="Auto Step" VerticalAlignment="Center" Margin="10"/>
-                    <RadioButton GroupName="AutoStep" Grid.Column="1" VerticalAlignment="Center" Margin="10" Content="Yes" IsChecked="True"/>
-                    <RadioButton GroupName="AutoStep" Grid.Column="2" VerticalAlignment="Center" Margin="10" Content="No"/>
-
-                    <TextBlock Text="Step Interval" Grid.Row="1" VerticalAlignment="Center" Margin="10"/>
-                    <TextBox Name="textInterval" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="10" Text="500"/>
-
-                    <TextBlock Text="Show Reference" Grid.Row="2" VerticalAlignment="Center" Margin="10"/>
-                    <CheckBox Name="chkShowRef" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="10"/>
-
-                    <Button Name="btnStart" Grid.Row="5" Content="Start" VerticalAlignment="Center" Margin="10" Click="btnStartClick"/>
+                    <TextBlock Margin="5" VerticalAlignment="Center">[Code]</TextBlock>
+                    <TextBlock Name="tbCodeName" Grid.Column="1" Margin="5" />
+                    <Button Name="btnLoad" Grid.Column="2" Click="btnLoadClick" Margin="5" Height="20">...</Button>
+                    <TextBox Name="textCode" Grid.Row="1" Grid.ColumnSpan="3" Focusable="False" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Margin="10"></TextBox>
                 </Grid>
-            </Grid>
-        </Border>
+            </materialDesign:Card>
 
+            <materialDesign:Card Grid.Row="2" Grid.Column="2" VerticalAlignment="Stretch" Margin="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Margin="5">[Control Panel]</TextBlock>
+                    <Grid Grid.Row="1" Grid.ColumnSpan="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Auto Step" VerticalAlignment="Center" Margin="10"/>
+                        <CheckBox Name="chkAutoStep" Grid.Column="1" Margin="10" Checked="AutoStepChecked" Unchecked="AutoStepUnchecked" IsChecked="True"/>
+                        <TextBox Name="textInterval" Grid.Column="2" Margin="10" materialDesign:HintAssist.Hint="Interval Delay (ms)" />
+
+                        <TextBlock Text="Show Reference" Grid.Row="1" VerticalAlignment="Center" Margin="10"/>
+                        <CheckBox Name="chkShowRef" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="10"/>
+
+                        <Button Name="btnStep" Grid.Row="2" Grid.Column="2" Content="Step" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10 5 10 5" Click="btnStepClick" IsEnabled="false"/>
+                        <Button Name="btnStart" Grid.Row="5" Grid.Column="2" Content="Start" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10 5 10 5" Click="btnStartClick"/>
+                    </Grid>
+                </Grid>
+            </materialDesign:Card>
+
+        </Grid>
     </Grid>
 </Window>

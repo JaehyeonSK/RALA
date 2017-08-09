@@ -95,3 +95,7 @@ D:\Onedrive\Projects\C#\CSVisualizerConsole\CSVisualizer\obj\Debug\CSVisualizer.
 D:\Onedrive\Projects\C#\CSVisualizerConsole\CSVisualizer\obj\Debug\CSVisualizer.exe
 D:\Onedrive\Projects\C#\CSVisualizerConsole\CSVisualizer\obj\Debug\CSVisualizer.pdb
 D:\Onedrive\Projects\C#\CSVisualizerConsole\CSVisualizer\obj\Debug\App.baml
+D:\Onedrive\Projects\C#\CSVisualizerConsole\CSVisualizer\bin\Debug\MaterialDesignColors.dll
+D:\Onedrive\Projects\C#\CSVisualizerConsole\CSVisualizer\bin\Debug\MaterialDesignThemes.Wpf.dll
+D:\Onedrive\Projects\C#\CSVisualizerConsole\CSVisualizer\bin\Debug\MaterialDesignThemes.Wpf.pdb
+D:\Onedrive\Projects\C#\CSVisualizerConsole\CSVisualizer\bin\Debug\MaterialDesignThemes.Wpf.xml
