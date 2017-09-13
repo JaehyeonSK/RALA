@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSVisualizerConsole", "CSVisualizerConsole\CSVisualizerConsole.csproj", "{28382A1A-F14A-4215-A37C-48919971FE32}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSVisualizer", "CSVisualizer\CSVisualizer.csproj", "{4FA2B9BC-3DB0-423D-A635-DF6ED85A66DB}"
 EndProject
 Global
@@ -13,10 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{28382A1A-F14A-4215-A37C-48919971FE32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28382A1A-F14A-4215-A37C-48919971FE32}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{28382A1A-F14A-4215-A37C-48919971FE32}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{28382A1A-F14A-4215-A37C-48919971FE32}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4FA2B9BC-3DB0-423D-A635-DF6ED85A66DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4FA2B9BC-3DB0-423D-A635-DF6ED85A66DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FA2B9BC-3DB0-423D-A635-DF6ED85A66DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
