@@ -120,46 +120,46 @@ namespace CSVisualizerConsole.Modules
             }
         }
 
-        /// <summary>
-        /// 변수에 객체의 레퍼런스를 할당하고 이전에 갖고 있던 레퍼런스의 Guid를 반환한다.
-        /// </summary>
-        /// <param name="varGuid">변수의 Guid</param>
-        /// <param name="refGuid">객체 레퍼런스의 Guid</param>
-        /// <returns></returns>
-        public Guid AssignReference(Guid varGuid, Guid refGuid)
-        {
-            var currentScope = Context.CurrentMethodContext;
+        ///// <summary>
+        ///// 변수에 객체의 레퍼런스를 할당하고 이전에 갖고 있던 레퍼런스의 Guid를 반환한다.
+        ///// </summary>
+        ///// <param name="varGuid">변수의 Guid</param>
+        ///// <param name="refGuid">객체 레퍼런스의 Guid</param>
+        ///// <returns></returns>
+        //public Guid AssignReference(Guid varGuid, Guid refGuid)
+        //{
+        //    var currentScope = Context.CurrentMethodContext;
 
-            // 변수가 현재 메소드 스코프에 없을 경우
-            if (!StackMemory[currentScope].ContainsKey(varGuid))
-                throw new Exception($"There is no variable({varGuid.ToString()}) in Current Scope.");
+        //    // 변수가 현재 메소드 스코프에 없을 경우
+        //    if (!StackMemory[currentScope].ContainsKey(varGuid))
+        //        throw new Exception($"There is no variable({varGuid.ToString()}) in Current Scope.");
 
-            // 변수가 레퍼런스 타입이 아닐 경우
-            if (StackMemory[currentScope][varGuid].VarType != CSDV_VarInfo.CSDV_Type.REF_TYPE)
-                throw new Exception($"Variable({varGuid.ToString()}) is not reference type.");
+        //    // 변수가 레퍼런스 타입이 아닐 경우
+        //    if (StackMemory[currentScope][varGuid].VarType != CSDV_VarInfo.CSDV_Type.REF_TYPE)
+        //        throw new Exception($"Variable({varGuid.ToString()}) is not reference type.");
 
-            // 레퍼런스 변수에 새로운 레퍼런스를 할당 하고 이전 레퍼런스의 Guid 반환
-            Guid prevGuid = (Guid)StackMemory[currentScope][varGuid].Value;
-            StackMemory[currentScope][varGuid].Value = refGuid;
+        //    // 레퍼런스 변수에 새로운 레퍼런스를 할당 하고 이전 레퍼런스의 Guid 반환
+        //    Guid prevGuid = (Guid)StackMemory[currentScope][varGuid].Value;
+        //    StackMemory[currentScope][varGuid].Value = refGuid;
 
-            return prevGuid;
-        }
+        //    return prevGuid;
+        //}
 
-        public void AssignValue(Guid varGuid, string value)
-        {
-            var currentScope = Context.CurrentMethodContext;
+        //public void AssignValue(Guid varGuid, string value)
+        //{
+        //    var currentScope = Context.CurrentMethodContext;
 
-            // 변수가 현재 스코프에 없을 경우
-            if (!StackMemory[currentScope].ContainsKey(varGuid))
-                throw new Exception($"There is no variable({varGuid.ToString()}) in Current Scope.");
+        //    // 변수가 현재 스코프에 없을 경우
+        //    if (!StackMemory[currentScope].ContainsKey(varGuid))
+        //        throw new Exception($"There is no variable({varGuid.ToString()}) in Current Scope.");
 
-            // 변수가 값 타입이 아닐 경우
-            if (StackMemory[currentScope][varGuid].VarType != CSDV_VarInfo.CSDV_Type.VAR_TYPE)
-                throw new Exception($"Variable({varGuid.ToString()}) is not value type.");
+        //    // 변수가 값 타입이 아닐 경우
+        //    if (StackMemory[currentScope][varGuid].VarType != CSDV_VarInfo.CSDV_Type.VAR_TYPE)
+        //        throw new Exception($"Variable({varGuid.ToString()}) is not value type.");
 
-            // 변수에 새로운 값 할당
-            StackMemory[currentScope][varGuid].Value = value;
-        }
+        //    // 변수에 새로운 값 할당
+        //    StackMemory[currentScope][varGuid].Value = value;
+        //}
 
         public void AssignReference(string name, Guid refGuid)
         {

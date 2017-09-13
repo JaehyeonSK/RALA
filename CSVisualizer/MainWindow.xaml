@@ -13,7 +13,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d" 
-        Title="Run And Learn Algorithm" Height="700" Width="1333" ResizeMode="CanMinimize">
+        Title="Run And Learn Algorithm" Height="700" Width="1250" ResizeMode="CanMinimize">
     <Grid Name="rootGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -43,6 +43,7 @@
             <materialDesign:Card Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
                 <ScrollViewer Name="scrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <Canvas Name="rootCanvas">
+                        
                     </Canvas>
                 </ScrollViewer>
             </materialDesign:Card>

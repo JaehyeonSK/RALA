@@ -48,6 +48,17 @@ namespace CSVisualizer.Controls
             this.Height = s.Height + canv.Margin.Top * 2;
         }
 
+        public Tuple<Point, Size> GetContentPositionSize(string fieldName)
+        {
+            var tb = this.FindName(fieldName) as TextBlock;
+            if (tb == null)
+                return null;
+            return new Tuple<Point, Size>(
+                new Point(Canvas.GetLeft(tb) + canv.Margin.Left, Canvas.GetTop(tb) + canv.Margin.Top),
+                new Size(tb.ActualWidth, tb.ActualHeight)
+                );
+        }
+
         public void SetContents(Guid objGuid, List<CSDV_VarInfo> fields)
         {
             double minHeight = 0;
@@ -65,6 +76,7 @@ namespace CSVisualizer.Controls
             foreach (var f in fields)
             {
                 TextBlock tb = new TextBlock();
+                tb.Name = f.Name;
 
                 if (f.Value?.GetType() == typeof(Guid))
                     tb.Text = $"{f.Name}: {f.Type} = {((Guid)f.Value).Shorten()}";

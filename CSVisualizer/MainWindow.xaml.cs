@@ -62,7 +62,7 @@ namespace CSVisualizer
 
             if (string.IsNullOrEmpty(textCode.Text))
             {
-                MessageBox.Show("Load your C# source code");
+                MessageBox.Show("Please load C# source code");
                 return;
             }
 
@@ -153,7 +153,7 @@ namespace CSVisualizer
                 snack.Message = new SnackbarMessage() { Content = code };
                 snack.Margin = new Thickness(0, 0, 0, 5);
                 Canvas.SetBottom(snack, 5);
-                Canvas.SetLeft(snack, 20);
+                Canvas.SetLeft(snack, 10);
                 codeArea.Children.Add(snack);
 
                 UpdateList(snack);
