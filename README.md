@@ -19,3 +19,4 @@
 
 ### 스크린샷  
   
+![image](images/rala.gif)
