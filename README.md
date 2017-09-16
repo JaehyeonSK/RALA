@@ -14,8 +14,8 @@
 * .NET Framework 4.6.1
 
 ### 기능 명세서  
-* [pdf]  
-* [docx]  
+* [pdf](docs/기능명세.pdf)  
+* [docx](docs/기능명세.docx)  
 
 ### 스크린샷  
   
